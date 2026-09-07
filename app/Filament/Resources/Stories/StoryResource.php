@@ -18,6 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+
 class StoryResource extends Resource
 {
     protected static ?string $model = Story::class;
@@ -58,11 +59,21 @@ class StoryResource extends Resource
         ];
     }
 
-    public static function getRecordRouteBindingEloquentQuery(): Builder
+
+    // public static function getRecordRouteBindingEloquentQuery(): Builder
+    // {
+    //     return parent::getRecordRouteBindingEloquentQuery()
+    //         ->withoutGlobalScopes([
+    //             SoftDeletingScope::class,
+    //         ]);
+    // }
+
+    public static function getEloquentQuery(): Builder
     {
-        return parent::getRecordRouteBindingEloquentQuery()
+        return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
-            ]);
+            ])
+            ->where('author_id', auth()->user()->id);
     }
 }
