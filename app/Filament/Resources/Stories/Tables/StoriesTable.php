@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Stories\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
@@ -47,13 +48,19 @@ class StoriesTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                DeleteAction::make()
+                    ->visible(fn() => auth()->user()->hasRole('Admin'))
+                    ->requiresConfirmation()
+                    ->successNotificationTitle('Story deleted succesfully')
+                    ->failureNotificationTitle('Failed to delete story'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                     ForceDeleteBulkAction::make(),
                     RestoreBulkAction::make(),
-                ]),
+                ])
+                    ->visible(fn() => auth()->user()->hasRole('Admin')),
             ]);
     }
 }
