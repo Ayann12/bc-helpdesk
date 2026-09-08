@@ -17,4 +17,9 @@ class story extends Model
     {
         return $this->belongsTo(User::class, 'author_id', 'id');
     }
+
+    public function reviewer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'reviewer_id', 'id');
+    }
 }
