@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Stories\Pages;
 
 use App\Filament\Resources\Stories\StoryResource;
+
+use Filament\Actions;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
@@ -21,5 +23,11 @@ class EditStory extends EditRecord
             ForceDeleteAction::make(),
             RestoreAction::make(),
         ];
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['status'] = 'waiting for review';
+        return $data;
     }
 }

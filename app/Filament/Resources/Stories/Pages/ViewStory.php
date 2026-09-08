@@ -27,7 +27,7 @@ class ViewStory extends ViewRecord
                         ->columnSpanFull(),
                 ])
                 ->action(function (array $data) {
-                    $this->record->update(['status' => 'Approved', 'feedback' => $data['feedback']]);
+                    $this->record->update(['status' => 'approved', 'feedback' => $data['feedback']]);
                     // $this->notify('success', 'Story approved successfully');
                 }),
             Action::make('cancel')
@@ -42,7 +42,7 @@ class ViewStory extends ViewRecord
                         ->columnSpanFull(),
                 ])
                 ->action(function (array $data) {
-                    $this->record->update(['status' => 'Rejected', 'feedback' => $data['feedback']]);
+                    $this->record->update(['status' => 'cancel', 'feedback' => $data['feedback']]);
                     // $this->notify('success', 'Story cancel successfully');
                 }),
 
@@ -57,7 +57,7 @@ class ViewStory extends ViewRecord
                         ->columnSpanFull(),
                 ])
                 ->action(function (array $data) {
-                    $this->record->update(['status' => 'Rework', 'feedback' => $data['feedback']]);
+                    $this->record->update(['status' => 'rework', 'feedback' => $data['feedback']]);
                     // $this->notify('success', 'Story rework successfully');
                 }),
         ];

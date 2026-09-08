@@ -62,7 +62,7 @@ class StoriesTable
                     ->visible(fn(Story $record) => auth()->user()->hasRole('Reviewer') && $record->status === 'waiting for review')
                     ->requiresConfirmation()
                     ->action(function (Story $record) {
-                        $record->update(['status' => 'in review']);
+                        $record->update(['status' => 'in review', 'reviewer_id' => auth()->id()]);
                         return redirect(StoryResource::getUrl('view', ['record' => $record]));
                     })
             ])
