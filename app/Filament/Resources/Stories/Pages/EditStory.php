@@ -27,7 +27,7 @@ class EditStory extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $data['status'] = 'waiting for review';
-        return $data;
+       $data['status'] = 'waiting for review';
+       return $data;
     }
 }

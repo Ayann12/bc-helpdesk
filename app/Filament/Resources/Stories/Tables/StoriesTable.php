@@ -25,6 +25,15 @@ class StoriesTable
                 TextColumn::make('title')
                     ->searchable(),
                 TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (Story $record): string => match($record->status) {
+                        'waiting for review' => 'warning',
+                        'in review' => 'info',
+                        'approved' => 'success',
+                        'cancel' => 'danger',
+                        'rework' => 'primary',
+                        default => 'secondary',
+                    })
                     ->searchable(),
                 TextColumn::make('author.name')
                     ->sortable()
@@ -59,11 +68,11 @@ class StoriesTable
                 Action::make('review')
                     ->label('review')
                     ->icon('heroicon-o-pencil-square')
-                    ->visible(fn(Story $record) => auth()->user()->hasRole('Reviewer') && $record->status === 'waiting for review')
+                    ->visible(fn (Story $record) => auth()->user()->hasRole('Reviewer') && $record->status === 'waiting for review' && ($record->reviewer_id === auth()->user()->id || is_null($record->reviewer_id)))
                     ->requiresConfirmation()
                     ->action(function (Story $record) {
                         $record->update(['status' => 'in review', 'reviewer_id' => auth()->id()]);
-                        return redirect(StoryResource::getUrl('view', ['record' => $record]));
+                        return redirect(static::getUrl('view', ['record' => $record]));
                     })
             ])
             ->toolbarActions([
@@ -72,7 +81,7 @@ class StoriesTable
                     ForceDeleteBulkAction::make(),
                     RestoreBulkAction::make(),
                 ])
-                    ->visible(fn() => auth()->user()->hasRole('Admin')),
+                    ->visible(fn () => auth()->user()->hasRole('Admin')),
             ]);
     }
 }
